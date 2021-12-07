@@ -81,7 +81,7 @@ class GliderPitchSim:
         Fdrag_wing = self.Cdrag(aoa + self._wing_alpha) * self._wing_A * .5 * RHO_AIR * vmag**2
 
         # Rotate into body frame (rotate by AoA) (longitudinal axis, vert axis)
-        Fwing = rotM(-aoa) @ np.vstack((-Fdrag_wing, Flift_wing))
+        Fwing = rotM(-aoa - self._wing_alpha) @ np.vstack((-Fdrag_wing, Flift_wing))
 
         # Thrust can be added here
         # Fwing[0] += self._mass * 5
@@ -90,7 +90,7 @@ class GliderPitchSim:
         Flift_horz_stab = self.Clift(aoa + self._horz_stab_alpha) * self._horz_stab_A * .5 * RHO_AIR * vmag**2
         Fdrag_horz_stab = self.Cdrag(aoa + self._horz_stab_alpha) * self._horz_stab_A * .5 * RHO_AIR * vmag**2
 
-        Fstab = rotM(-aoa) @ np.vstack((-Fdrag_horz_stab, Flift_horz_stab))
+        Fstab = rotM(-aoa - self._horz_stab_alpha) @ np.vstack((-Fdrag_horz_stab, Flift_horz_stab))
 
         self._Fwing.append(Flift_wing)
         self._Fstab.append(Flift_horz_stab)
